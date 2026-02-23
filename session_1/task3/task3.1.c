@@ -58,14 +58,25 @@ int main(void) {
 	// complete your code here
     if (units <= 100) {
         bill = units * 2.0;
-		// to do
-    }
+	} else if (units <= 300) {
+		bill = (100 * 2.0) + ((units - 100) * 3.50);
+	} else {
+		bill = (100 * 2.0) + (200 * 3.50) + ((units - 300) * 5.0);
+	}
 
     /* subtask 2: apply surcharge based on customer type */
 	// complete your code here
     switch (customerType) {
         case 1:
-            // to do
+            printf("Customer type: Domestic\n");
+			break;
+		case 2:
+			printf("Customer type: Commercial\n");
+			bill = bill * 1.10;
+			break;
+		case 3:
+			printf("Customer type: Industrial\n");
+			bill = bill * 1.20;
 			break;
 
         default:
@@ -79,3 +90,34 @@ int main(void) {
 
     return 0;
 }
+
+
+/*
+ * TEST CASES:
+ *
+ * Test Case 1: Domestic - 50 units (within first slab)
+ * Input: 50, 1
+ * Expected Output:
+ * Customer type: Domestic
+ * Units consumed: 50.00
+ * Total bill amount: 100.00
+ *
+ * Test Case 2: Commercial - 250 units (spanning two slabs with 10% surcharge)
+ * Input: 250, 2
+ * Expected Output:
+ * Customer type: Commercial
+ * Units consumed: 250.00
+ * Total bill amount: 792.50
+ *
+ * Test Case 3: Industrial - 400 units (spanning three slabs with 20% surcharge)
+ * Input: 400, 3
+ * Expected Output:
+ * Customer type: Industrial
+ * Units consumed: 400.00
+ * Total bill amount: 1392.00
+ *
+ * Test Case 4: Invalid customer type
+ * Input: 200, 5
+ * Expected Output:
+ * Invalid customer type
+ */

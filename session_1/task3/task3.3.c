@@ -72,14 +72,36 @@ int main(void) {
 
     /* subtask1: Age eligibility check */
 	// Complete your code here
-
+	if (age < 21 || age > 80) {
+		printf("Loan status: Rejected (Age not eligible)\n");
+		return 1;
+	}
 
 
     /* subtask 2: Loan-specific checks using switch*/
 	// Complete your code here
     switch (loan_type) {
         case 1:
+            printf("Loan type: Home Loan\n");
+            if (income >= 5000 && credit_score >= 700) {
+                approved = true;
+                max_loan = income * 60;
+            }
             break;
+		case 2:
+			printf("Loan type: Car Loan\n");
+			if (income >= 3000 && credit_score >= 650) {
+				approved = true;
+				max_loan = income * 20;
+			}
+			break;
+		case 3:
+			printf("Loan type: Personal Loan\n");
+			if (income >= 2000 && credit_score >= 600) {
+				approved = true;
+				max_loan = income * 10;
+			}
+			break;
 
         default:
             printf("Invalid loan type\n");
@@ -89,9 +111,47 @@ int main(void) {
     /* subtask 3: Output result */
 	// Complete your code here
 	if (approved) {
-		// todo
+		printf("Loan status: Approved\n");
+		printf("Maximum loan amount: %.2f\n", max_loan);
+	} else {
+		printf("Loan status: Rejected (Criteria not met)\n");
 	}
 
 
     return 0;
 }
+
+
+/*
+ * TEST CASES:
+ *
+ * Test Case 1: Approved Car Loan - age 30, income 4500, credit score 720
+ * Input: 2, 30, 4500, 720
+ * Expected Output:
+ * Loan type: Car Loan
+ * Loan status: Approved
+ * Maximum loan amount: 90000.00
+ *
+ * Test Case 2: Rejected Home Loan - insufficient income
+ * Input: 1, 35, 4000, 750
+ * Expected Output:
+ * Loan type: Home Loan
+ * Loan status: Rejected (Criteria not met)
+ *
+ * Test Case 3: Rejected age eligibility - age too young
+ * Input: 1, 19, 6000, 750
+ * Expected Output:
+ * Loan status: Rejected (Age not eligible)
+ *
+ * Test Case 4: Approved Personal Loan - age 45, income 2500, credit score 650
+ * Input: 3, 45, 2500, 650
+ * Expected Output:
+ * Loan type: Personal Loan
+ * Loan status: Approved
+ * Maximum loan amount: 25000.00
+ *
+ * Test Case 5: Invalid loan type
+ * Input: 5, 30, 5000, 700
+ * Expected Output:
+ * Invalid loan type
+ */
