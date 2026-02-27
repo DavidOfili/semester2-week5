@@ -17,7 +17,13 @@ int main(void){
 	int squares[10];    // max possible size
 	int count = 0;   // actual number of results
 	
-	//todo: convert the list comprehension
+	// convert the list comprehension: collect squares of even numbers
+	for (int i = 0; i < 10; i++) {
+	    int x = numbers[i];
+	    if (x % 2 == 0) {
+	        squares[count++] = x * x;
+	    }
+	}
 	
 	//print results
 	for(int i=0; i < count; i++){
