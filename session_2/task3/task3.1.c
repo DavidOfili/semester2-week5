@@ -19,41 +19,85 @@ int main(void) {
     int max = 100;       // Maximum value for random number
     int playing = 1;     // Flag to control the main game loop
     
-    // Seed the random number generator
+    /* Seed the random number generator with the current time so we get
+       different random numbers each time the program runs */
     srand(time(NULL));
     
     printf("=== Number Guessing Game ===\n");
     printf("I'm thinking of a number between %d and %d\n", min, max);
     
-    // TODO: Generate a random number between min and max
-    // Hint: target = min + rand() % (max - min + 1);
-    
-    // TODO: Implement the main game loop
-    // This should continue until the person decides to quit
-    
-        // Reset number of guesses for a new game
+    /* Main game loop: continues until the person chooses not to play again */
+    while (playing) {
+        /* Generate a random number between min and max (inclusive).
+           The formula is: min + rand() % (max - min + 1)
+           This ensures we get a number within the correct range */
+        target = min + rand() % (max - min + 1);
+        
+        /* Reset the guess counter for a new game */
         num_guesses = 0;
+        guess = -1;  /* Initialize to an impossible value */
         
-        // TODO: Implement the guessing loop
-        // This should continue until the correct number is guessed
-        
-            printf("Enter your guess: ");
+        /* Guessing loop: continues until the person guesses correctly */
+        while (guess != target) {
+            printf("\nEnter your guess: ");
             
-            // TODO: Read and process the input
-            // Use fgets() to read input
-            // Use atoi() to convert to integer
+            /* Read the input as a string using fgets().
+               This is safer than scanf() because it prevents buffer overflow */
+            if (fgets(input, sizeof(input), stdin) == NULL) {
+                printf("Error reading input. Please try again.\n");
+                continue;  /* Skip to the next iteration */
+            }
             
+            /* Convert the string to an integer using atoi().
+               atoi() returns 0 if the string is not a valid number */
+            guess = atoi(input);
+            
+            /* Validate that the guess is within the valid range */
+            if (guess < min || guess > max) {
+                printf("Please enter a number between %d and %d.\n", min, max);
+                continue;  /* Skip counting this as a real guess */
+            }
+            
+            /* Increment the guess counter */
             num_guesses++;
             
-            // TODO: Check if the guess is correct, too high, or too low
-            // Provide appropriate in-game feedback
+            /* Compare the guess to the target and provide feedback */
+            if (guess < target) {
+                printf("Too low! Try a higher number.\n");
+            } else if (guess > target) {
+                printf("Too high! Try a lower number.\n");
+            } else {
+                /* The guess is correct */
+                printf("Correct! You guessed the number in %d attempt(s).\n", num_guesses);
+            }
             
-            // TODO: Offer a hint after several failed attempts
-            
+            /* Offer a hint after 5 failed attempts */
+            if (num_guesses == 5 && guess != target) {
+                int mid = (min + max) / 2;
+                printf("Hint: The number is ");
+                if (target < mid) {
+                    printf("in the lower half of the range.\n");
+                } else {
+                    printf("in the upper half of the range.\n");
+                }
+            }
+        }
         
-        // TODO: Ask if the person wants to play again
-        // Update the 'playing' flag based on the answer
-    
+        /* Ask if the person wants to play again */
+        printf("\nWould you like to play again? (yes/no): ");
+        char response[10];  /* Buffer for yes/no answer */
+        
+        /* Read the response */
+        if (fgets(response, sizeof(response), stdin) == NULL) {
+            break;
+        }
+        
+        /* Check the first character of the response.
+           'y' or 'Y' means play again, anything else means quit */
+        if (response[0] != 'y' && response[0] != 'Y') {
+            playing = 0;  /* Exit the main loop */
+        }
+    }
     
     printf("\nThanks for playing!\n");
     return 0;
